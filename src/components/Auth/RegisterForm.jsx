@@ -4,16 +4,20 @@ import { useDispatch } from "react-redux";
 import { registerRequest } from "../../modules/auth";
 import { useNavigate } from "react-router-dom";
 
-const RegisterForm = ({ onSubmit }) => {
+const RegisterForm = () => {
   const [inputs, setInputs] = useState({
-    username: "",
+    email: "",
     password: "",
     passwordConfirm: "",
   });
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateEmail(inputs.email)) {
+      alert("올바른 이메일 형식이 아닙니다.");
+      return;
+    }
     if (inputs.password !== inputs.passwordConfirm) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
@@ -29,14 +33,21 @@ const RegisterForm = ({ onSubmit }) => {
   const handleChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
+
+  const validateEmail = (email) => {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   return (
     <AuthForm onSubmit={handleSubmit}>
       <StyledInput
         type="text"
-        name="username"
-        value={inputs.username}
+        name="email"
+        value={inputs.email}
         onChange={handleChange}
-        placeholder="아이디"
+        placeholder="이메일"
         required
       />
       <StyledInput
@@ -55,7 +66,9 @@ const RegisterForm = ({ onSubmit }) => {
         placeholder="비밀번호 확인"
         required
       />
-      <StyledButton type="submit">회원가입</StyledButton>
+      <StyledButton style={{ width: "115.9%" }} type="submit">
+        회원가입
+      </StyledButton>
       {/* <Link to="/">로그인</Link> */}
     </AuthForm>
   );
