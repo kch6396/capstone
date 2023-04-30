@@ -52,7 +52,7 @@ export const logoutRequest = () => async (dispatch) => {
 
 export const setToken = (token) => (dispatch) => {
   // localStorage.setItem("token", token);
-  console.log(token);
+  // console.log(token);
   dispatch({ type: SET_TOKEN, payload: token });
 };
 

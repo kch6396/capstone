@@ -54,7 +54,7 @@ const Hr = styled.hr`
 const LoginPage = () => {
   return (
     <LoginContainer style={{ display: "flex", width: "100%", height: "100%" }}>
-      <Navbar />
+      {/* <Navbar /> */}
       <DescriptionForm>
         <DescriptionContainer>
           <MainDescription>Welcome to NeuralDrop!</MainDescription>

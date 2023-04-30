@@ -1,112 +1,163 @@
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 import Logout from "../../containers/Auth/Logout";
-import { useEffect, useState } from "react";
-import { logout } from "../../api/auth";
-import { setToken } from "../../modules/auth";
 
 const NavContainer = styled.div`
-  background-color: #f8f9fa;
   box-shadow: 0px 2px 5px 0 rgb(0, 0, 0, 70%);
   z-index: 1;
+  width: 15%;
+  transition: all 0.4s;
+  overflow: hidden;
+  position: fixed;
+  height: 100vh;
+  background-color: white;
+  @media (max-width: 1280px) {
+    width: 0;
+    overflow: hidden;
+  }
 `;
 
 const NavItem = styled.li`
   font-size: 35px;
-  padding: 20px 110px 0px 10px;
+  margin: 20px 110px 0px 10px;
   color: #49277f;
 `;
 
 const NavItemAuth = styled.li`
-  /* font-size: 14px; */
-  padding: 10px 110px 10px 15px;
-  color: #49277f;
+  padding-top: 10px;
+  color: #333;
 `;
 
 export const AuthLink = styled(Link)`
-  font-size: 14px;
-  /* padding: 0px 100px 10px 10px; */
+  font-size: 12px;
   color: #999;
   text-decoration: none;
-
+  white-space: nowrap;
   &:hover {
     color: #333;
     text-decoration: underline;
   }
 `;
 
+export const Email = styled.p`
+  margin: 0 10px 0 0;
+  font-size: 16px;
+`;
+
+export const NavTask = styled.div`
+  color: #333;
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 70px;
+`;
+
+export const NavTaskItem = styled.div`
+  margin: 6px 10px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  transition: 0.2s;
+  cursor: pointer;
+  display: flex;
+  ${(props) =>
+    props.active &&
+    `
+  background-color: #760b87;
+  color: white;
+  `}
+  &:hover {
+    background-color: #760b87;
+    color: white;
+  }
+`;
+
+export const NavTaskItemLink = styled(Link)`
+  color: #333;
+`;
+
 const Navbar = () => {
-  // const { token } = useSelector((state) => state.auth);
-  // // useEffect(() => {
-  // //   token = localStorage.getItem("token");
-  // // }, []);
-  // console.log(token);
-  // const email = localStorage.getItem("email");
-  // const onClick = () => {
-  //   navigate("/");
-  // };
-  // let [token, setToken] = useState(null);
-
-  // useEffect(() => {
-  // let token2 = localStorage.getItem("token");
-  // setToken(token2);
-
-  // const [getToken, setGetToken] = useState(null);
-  // }, []);
-  // setGetToken(localStorage.getItem("token"));
-  // useEffect(() => {
-  //   token = localStorage.getItem("token");
-  // }, [token]);
-  // const [hasToken, setHasToken] = useState(localStorage.getItem("token"));
   const email = localStorage.getItem("email");
-  // const token = useSelector((state) => state.auth.token);
-  const dispatch = useDispatch();
   const token = localStorage.getItem("token");
-  // const { token } = useSelector((state) => state.auth.token);
-  // useEffect(() => {
-  //   // localStorage에서 token 값 가져오기
-  //   const storedToken = localStorage.getItem("token");
-  //   // if (storedToken) {
-  //   //   // 가져온 token 값이 존재하면, store에 저장
-  //   //   // dispatch(setToken(storedToken));
-  //   //   console.log("home");
-  //   // }
-  // }, [dispatch, token]);
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) {
-  //     navigate("/");
-  //   }
-  // }, []);
-
-  // const [token, setToken] = useState(null);
-  // // const token = true;
-  // useEffect(() => {
-  //   // localStorage에서 token 값의 변경을 감지
-  //   const onStorageChange = () => {
-  //     setHasToken(!!localStorage.getItem("token"));
-  //   };
-
-  //   window.addEventListener("storage", onStorageChange);
-
-  //   return () => {
-  //     window.removeEventListener("storage", onStorageChange);
-  //   };
-  // }, []);
+  const location = useLocation();
   return (
     <NavContainer>
       <NavItem>
         {token ? (
-          <Link to="/home">NeuralDrop</Link>
+          <Link style={{ color: "#760b87" }} to="/models">
+            NeuralDrop
+          </Link>
         ) : (
-          <Link to="/">NeuralDrop</Link>
+          <Link style={{ color: "#760b87" }} to="/">
+            NeuralDrop
+          </Link>
         )}
       </NavItem>
-      {token && <p>{email}</p>}
       <NavItemAuth>
-        {token ? <Logout /> : <AuthLink to="/register">회원가입</AuthLink>}
+        {token ? (
+          <div>
+            <div style={{ display: "flex", paddingLeft: "14px" }}>
+              <Email>{email}</Email>
+              <Logout />
+            </div>
+            <NavTask>
+              <div>
+                <div
+                  style={{
+                    fontSize: "11px",
+                    color: "#aaa",
+                    margin: "0px 20px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Model & Dataset
+                </div>
+                <NavTaskItemLink to="/models">
+                  <NavTaskItem
+                    active={
+                      location.pathname !== "/datasets" &&
+                      location.pathname !== "/modelcompression"
+                    }
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Models
+                  </NavTaskItem>
+                </NavTaskItemLink>
+              </div>
+              <NavTaskItemLink to="/datasets">
+                <NavTaskItem active={location.pathname === "/datasets"}>
+                  Datasets
+                </NavTaskItem>
+              </NavTaskItemLink>
+              <div>
+                <div
+                  style={{
+                    fontSize: "11px",
+                    color: "#aaa",
+                    margin: "0px 20px",
+                    marginTop: "50px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Model Compressing
+                </div>
+                <NavTaskItemLink to="/modelcompression">
+                  <NavTaskItem
+                    active={location.pathname === "/modelcompression"}
+                  >
+                    Model Compression
+                  </NavTaskItem>
+                </NavTaskItemLink>
+              </div>
+            </NavTask>
+          </div>
+        ) : location.pathname === "/" ? (
+          <AuthLink style={{ paddingLeft: "14px" }} to="/register">
+            회원가입
+          </AuthLink>
+        ) : (
+          <AuthLink style={{ paddingLeft: "14px" }} to="/">
+            로그인
+          </AuthLink>
+        )}
       </NavItemAuth>
     </NavContainer>
   );

@@ -8,18 +8,11 @@ const LoginForm = () => {
   const [inputs, setInputs] = useState({ username: "", password: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    // if (storedToken) {
-    //   dispatch(setToken(storedToken));
-    // } else {
-    //   navigate("/home");
-    // }
-    console.log("login");
     if (storedToken) {
-      navigate("/home");
+      navigate("/models");
     }
   }, [navigate, dispatch]);
 
@@ -30,7 +23,7 @@ const LoginForm = () => {
       await dispatch(loginRequest(inputs));
       token = localStorage.getItem("token");
       if (token !== null) {
-        navigate("/home");
+        navigate("/models");
       }
     } catch (error) {
       console.error(error);
@@ -60,7 +53,6 @@ const LoginForm = () => {
         required
       />
       <StyledButton type="submit">로그인</StyledButton>
-      {/* <Link to="/register">회원가입</Link> */}
     </AuthForm>
   );
 };

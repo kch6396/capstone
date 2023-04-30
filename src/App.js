@@ -1,20 +1,26 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
-import Logout from "./containers/Auth/Logout";
-import { useSelector } from "react-redux";
-import Navbar from "./components/common/Navbar";
-import Home from "./pages/Home";
-import { useEffect } from "react";
+import Authentication from "./components/common/Authentication";
+import TaskManagement from "./pages/TaskManagement";
+import CreateTaskPage from "./pages/CreateTaskPage";
+import ModelCompressionPage from "./pages/ModelCompressionPage";
+import DatasetPage from "./pages/DatasetPage";
 
 const App = () => {
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/home" element={<Home />} />
-      </Routes>
+      <Authentication>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/models" element={<TaskManagement />} />
+          <Route path="/models/upload" element={<CreateTaskPage />} />
+          <Route path="/modelcompression" element={<ModelCompressionPage />} />
+          <Route path="/datasets" element={<DatasetPage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Authentication>
       {/* <LogoutButton /> */}
       {/* {token && <Logout />} */}
     </div>
